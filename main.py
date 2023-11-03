@@ -17,6 +17,33 @@ def startDownload():
         title.configure(text=ytObject.title, text_color="white")
     except:
         finishLabel.configure(text="Download Error", text_color="red")
+
+def StartDownloadAudioMP3():
+    try:
+        ytLink=link.get()
+        ytObject = YouTube(ytLink, on_progress_callback=on_progress)
+        Audio = ytObject.streams.filter(only_audio=True).first()
+        finishLabel.configure(text="")
+        if ytObject is not None:
+            Audio.download(path, filename=f"{Audio.title}.mp3")
+        finishLabel.configure(text="Download of Audio is finished", text_color="white")
+        title.configure(text=ytObject.title, text_color="white")
+    except:
+        finishLabel.configure(text="Download Error", text_color="red")
+
+def StartDownloadAudioWAV():
+    try:
+        ytLink=link.get()
+        ytObject = YouTube(ytLink, on_progress_callback=on_progress)
+        Audio = ytObject.streams.filter(only_audio=True).first()
+        finishLabel.configure(text="")
+        if ytObject is not None:
+            Audio.download(path, filename=f"{Audio.title}.wav")
+        finishLabel.configure(text="Download of Audio is finished", text_color="white")
+        title.configure(text=ytObject.title, text_color="white")
+    except:
+        finishLabel.configure(text="Download Error", text_color="red")
+
 def on_progress(stream, chunk, bytes_remaining):
     total_size = stream.filesize
     bytes_downloaded = total_size - bytes_remaining
@@ -49,7 +76,12 @@ progressBar = customtkinter.CTkProgressBar(app, width=400)
 progressBar.set(0)
 progressBar.pack(padx=10,pady=10)
 
-download = customtkinter.CTkButton(app, text="Download", command=startDownload)
+download = customtkinter.CTkButton(app, text="Download Video", command=startDownload)
 download.pack(padx=20,pady=20)
 
+download_audio = customtkinter.CTkButton(app, text="Download Audio mp3", command=StartDownloadAudioMP3)
+download_audio.pack(padx=20,pady=20)
+
+download_audio = customtkinter.CTkButton(app, text="Download Audio wav", command=StartDownloadAudioWAV)
+download_audio.pack(padx=20,pady=20)
 app.mainloop()
